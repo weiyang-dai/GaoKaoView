@@ -2,15 +2,23 @@
    <div class="app">
            <!-- <div class="head">head</div> -->
            <div class="container">
-                <div class="left-group">left-group</div>
-                <div class="mid-group">
+                <div class="left">
+                    <div style="width:300px"></div>
+                </div>
+                <div class="mid">
                   <mymap></mymap>
                 </div>
-                <div class="right-group">
-                    <enterScore></enterScore>
+                <div class="right">
+                    <enterScore class= "box"></enterScore>
                 </div>
            </div>
-           <div class="foot">foot</div>
+           <div class="foot">
+               <mycircle class= "box" style="width:28%; height:auto; float:left; display:inline"></mycircle>
+                <mycircle2 class= "box" style="width:25%;  height:auto; float:left; display:inline"></mycircle2>
+                <my-list class= "box" style="width:24%;  height:auto; float:left; display:inline"></my-list>
+                <my-world-cloud  class= "box" style="width:23%;  height:100%; float:left; display:inline">></my-world-cloud>
+               <!-- <school-para></school-para> -->
+           </div>
       </div>
 
 </template>
@@ -18,11 +26,21 @@
 <script>
 import mymap from './components/map';
 import enterScore from './components/enterScore';
+import schoolPara from './components/schoolPare';
+import mycircle from './components/mycircle';
+import mycircle2 from './components/mycircle2';
+import myList from './components/myList';
+import myWorldCloud from './components/worldCloud'
 export default {
   name: 'App',
   components:{
     mymap,
-    enterScore
+    enterScore,
+    schoolPara,
+    mycircle,
+    mycircle2,
+    myList,
+    myWorldCloud
     },
     data: function () {
       return {
@@ -43,19 +61,27 @@ export default {
             background-color: gold;
             text-align: center;
         } */
+        .app{
+           background-color: #145b7d;
+        }
         .container{
             position: absolute;
             width: 100%;
             display: flex;
             top: 0px;
-            bottom: 100px;
+            bottom: 250px;
         }
-        .left-group, .right-group{
+        .left{
             width: 400px;
-            background-color: #7ecff2;
+            background-color: #145b7d;
             text-align: center;
         }
-        .mid-group{
+        .right{
+            width: 400px;
+            background-color: #145b7d;
+            text-align: center;
+        }
+        .mid{
             flex: 1;
             text-align: center;
         }
@@ -64,8 +90,13 @@ export default {
             width: 100%;
             height: 250px;
             bottom: 0;
-            background-color: purple;
+            background-color: #145b7d;
             text-align: center;
         }
+        .box{
+            box-shadow: 0px 0px 20px #333399;
+            border-style:outset
+        }
+
 
 </style>

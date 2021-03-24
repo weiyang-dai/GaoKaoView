@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="buttonShow">
-            <button class="mybutton">上一年</button>
-            <p>{{year}}</p>
-            <button class="mybutton">下一年</button>
+            <!-- <button class="mybutton">上一年</button> -->
+            <p>{{location}}历年录取线</p>
+            <!-- <button class="mybutton">下一年</button> -->
         </div>
         <div class="enterScore" ref="enterScore"></div>
     </div>
@@ -11,13 +11,14 @@
 
 <script>
 import $ from 'jquery'
+import Score from '../../static/enterScore.json'
 let echarts = require("echarts");
 
 export default {
   name: 'enter',
   data () {
     return {
-        year:'2020'
+        location:'四川'
     }
   },
 mounted(){
@@ -25,11 +26,28 @@ mounted(){
   },
   methods: {
    drawLine(){
-       console.log("执行")
+    var years=Score[0]['years']
+    var province=Score[0]['province']
+    var lable=Score[0]['lable']
+    this.location=province
+    var data=[]
+    for(let i in years)
+    {
+        let obj= {
+            name: years[i],
+            type: 'bar',
+            //stack: '总量',
+            label: {
+                show: true,
+                position: 'insideRight'
+            },
+            data:Score[0][ years[i]]
+        }
+        data.push(obj)
+    }
     // 基于准备好的dom，初始化echarts实例
     var bar_dv = this.$refs.enterScore;
         if (bar_dv){
-          console.log('bar_dv不为空');
           let myChart = this.$echarts.init(bar_dv)
     var option = {
     tooltip: {
@@ -39,7 +57,7 @@ mounted(){
         }
     },
     legend: {
-        data: ['本科一批', '本科二批']
+        data:years
     },
     grid: {
         left: '3%',
@@ -48,34 +66,29 @@ mounted(){
         containLabel: true
     },
     xAxis: {
-        type: 'value'
+        type: 'value',
+        nameTextStyle:{
+            fontWeight: "bolder",
+            color: "rgba(0, 0, 0, 1)",
+            fontSize :12
+        },
+       axisLine: {
+                lineStyle: {
+                    color: "#fff",
+                }
+            }
+
     },
     yAxis: {
         type: 'category',
-        data: ['四川', '江苏', '河南', '河北']
+        data:lable,
+         axisLine: {
+                lineStyle: {
+                    color: "#fff",
+                }
+            }
     },
-    series: [
-        {
-            name: '本科一批',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                show: true,
-                position: 'insideRight'
-            },
-            data: [320, 302,456,566]
-        },
-        {
-            name: '本科二批',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                show: true,
-                position: 'insideRight'
-            },
-            data: [120, 132,345,656]
-        }
-    ]
+    series:data
 };
       myChart.setOption(option);
 }

@@ -6,6 +6,7 @@
 <script>
 import $ from 'jquery'
 import china from '../../static/china.json'
+import location from '../../static/本科学校经纬度.json'
 let echarts = require("echarts");
 
 export default {
@@ -16,25 +17,14 @@ export default {
     }
   },
 mounted(){
+ 
     this.drawLine();
   },
   methods: {
    drawLine(){
-    console.log(china)
     // 基于准备好的dom，初始化echarts实例
-
-    var mydata =  [{
-      name:"合肥",
-      value:[117.27,31.86]
-    },
-    {
-      name:"武汉",
-      value:[114.31,30.52]
-    },
-    {
-      name:"长沙",
-      value:[113,28.21]
-    }]
+    var mydata=location
+  //  mydata= [{"name":"清华大学","value":[104.087549,30.40824]},{"name":"北京大学","value":[116.316833,39.998877]},{"name":"复旦大学","value":[121.742955,31.066658]}]
     var bar_dv = this.$refs.chart;
         if (bar_dv){
           console.log('bar_dv不为空');
@@ -43,7 +33,7 @@ mounted(){
 
       var option = {
         baseOption: {
-          backgroundColor: " #004A80",
+          backgroundColor: "#76becc",
           title: {
             text: "全国大学地图",
             x: "center"
@@ -54,14 +44,14 @@ mounted(){
           geo: {
             map: "china",
             center: [108.9199, 33.1904],
-            zoom: 0,
+            zoom: 4,
             itemStyle: {
               shadowBlur: 5
             },
             roam: true,
             scaleLimit: {
               min: 1,
-              max: 10
+              max: 15
             }
           },
           //触碰文字
@@ -70,10 +60,10 @@ mounted(){
           },
           series: [
             {
-              type: "effectScatter",
+              type: "scatter",
               coordinateSystem: "geo",
               data: mydata,
-              symbolSize: 12,
+              symbolSize: 15,
               label: {
                 normal: {
                   show: false
@@ -82,12 +72,12 @@ mounted(){
                   show: false
                 }
               },
-              itemStyle: {
-                emphasis: {
-                  borderColor: "#fff",
-                  borderWidth: 1
-                }
-              }
+              // itemStyle: {
+              //   emphasis: {
+              //     borderColor: "#FFCC99",
+              //     borderWidth: 5
+              //   }
+              // }
             }
           ]
         }

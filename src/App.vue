@@ -10,13 +10,14 @@
                 </div>
                 <div class="right">
                     <enterScore class= "box"></enterScore>
+                    <my-line-chart></my-line-chart>
                 </div>
            </div>
            <div class="foot">
                <mycircle class= "box" style="width:28%; height:auto; float:left; display:inline"></mycircle>
                 <mycircle2 class= "box" style="width:25%;  height:auto; float:left; display:inline"></mycircle2>
                 <my-list class= "box" style="width:24%;  height:auto; float:left; display:inline"></my-list>
-                <my-world-cloud  class= "box" style="width:23%;  height:100%; float:left; display:inline">></my-world-cloud>
+                <my-world-cloud  class= "box" style="width:23%;  height:100%; float:left; display:inline">></my-world-cloud> -->
                <!-- <school-para></school-para> -->
            </div>
       </div>
@@ -31,6 +32,7 @@ import mycircle from './components/mycircle';
 import mycircle2 from './components/mycircle2';
 import myList from './components/myList';
 import myWorldCloud from './components/worldCloud'
+import myLineChart from './components/lineChart'
 export default {
   name: 'App',
   components:{
@@ -40,7 +42,8 @@ export default {
     mycircle,
     mycircle2,
     myList,
-    myWorldCloud
+    myWorldCloud,
+    myLineChart
     },
     data: function () {
       return {
@@ -69,15 +72,15 @@ export default {
             width: 100%;
             display: flex;
             top: 0px;
-            bottom: 250px;
+            bottom: 30%;
         }
         .left{
-            width: 400px;
+            width: 30%;
             background-color: #145b7d;
             text-align: center;
         }
         .right{
-            width: 400px;
+            width: 34%;
             background-color: #145b7d;
             text-align: center;
         }
@@ -88,7 +91,7 @@ export default {
         .foot{
             position: absolute;
             width: 100%;
-            height: 250px;
+            height: 30%;
             bottom: 0;
             background-color: #145b7d;
             text-align: center;

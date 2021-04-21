@@ -5,7 +5,9 @@
 <script>
 import Highcharts from "highcharts/highcharts";
 import wordcloud from "highcharts/modules/wordcloud";
+import worldData from '../../static/worldCloud1.json'
 import $ from 'jquery'
+import PubSub from 'pubsub-js'
 wordcloud(Highcharts);
 export default {
   name: 'HelloWorld',
@@ -37,6 +39,18 @@ export default {
   },
    mounted(){
          this.initClassHighCharts(this.chartsData);
+         PubSub.subscribe("clickSchool", (msg, data) => {
+
+           for(let i=0;i<worldData.length;i++)
+           {
+             if(data==worldData[i]['学校'])
+             {
+              console.log(worldData[i]['data'])
+             this.initClassHighCharts(worldData[i]['data'])
+             break;
+             }
+           }
+    });
       },
   methods: {
   // 初始化HighCharts
@@ -61,6 +75,10 @@ export default {
       ],
       title: {
         text: "词云",
+         style: {
+                fontSize: 25,
+                color: "rgba(245, 237, 237, 1)"//设置标题字体颜色
+                 },
       },
     });
   },}

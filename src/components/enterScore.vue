@@ -1,5 +1,5 @@
 <template>
-    <div v-show="school==''">
+    <div v-show="(school=='')&&(location!='')">
         <!-- <div class="buttonShow">
             <button class="mybutton">上一年</button> 
          <p>{{location}}历年录取线</p>
@@ -23,18 +23,30 @@ export default {
     }
   },
 mounted(){
-    this.drawLine();
+    this.drawLine(0);
+    PubSub.subscribe("pub_mapProvince", (msg, data) => {
+        this.location=data
+        this.school=''
+        for(let i=0;i<Score.length;i++)
+        {
+            if(Score[i]['province']==data)
+            {
+                this.drawLine(i)
+                break;
+            }
+        }
+    });
      PubSub.subscribe("clickSchool", (msg, data) => {
       this.school = data;
+      this.location=''
     });
 
   },
   methods: {
-   drawLine(){
-    var years=Score[0]['years']
-    var province=Score[0]['province']
-    var lable=Score[0]['lable']
-    this.location=province
+   drawLine(index){
+    var years=Score[index]['years']
+    var province=Score[index]['province']
+    var lable=Score[index]['lable']
     var data=[]
     for(let i in years)
     {
@@ -59,10 +71,15 @@ mounted(){
         trigger: 'axis',
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-        }
+        },
+        
     },
     legend: {
-        data:years
+        data:years,
+         textStyle: {
+                fontSize: 15,
+                color: "rgba(245, 237, 237, 1)"//设置标题字体颜色
+                 },
     },
     grid: {
         left: '3%',

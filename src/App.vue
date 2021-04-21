@@ -3,7 +3,9 @@
            <!-- <div class="head">head</div> -->
            <div class="container">
                 <div class="left">
-                    <div style="width:300px"></div>
+                    <div style="width:300px">
+                        <my-select-menu></my-select-menu>
+                    </div>
                 </div>
                 <div class="mid">
                   <mymap></mymap>
@@ -31,8 +33,9 @@ import schoolPara from './components/schoolPare';
 import mycircle from './components/mycircle';
 import mycircle2 from './components/mycircle2';
 import myList from './components/myList';
-import myWorldCloud from './components/worldCloud'
-import myLineChart from './components/lineChart'
+import myWorldCloud from './components/worldCloud';
+import myLineChart from './components/lineChart';
+import mySelectMenu from './components/selectMenu';
 export default {
   name: 'App',
   components:{
@@ -43,7 +46,8 @@ export default {
     mycircle2,
     myList,
     myWorldCloud,
-    myLineChart
+    myLineChart,
+    mySelectMenu
     },
     data: function () {
       return {

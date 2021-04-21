@@ -1,5 +1,5 @@
 <template>
-    <div v-show="school!=''">
+    <div v-show="(school!='')&&(location=='')">
         <div class="lineChart" ref="lineChart"></div>
         <div class="barChart" ref="barChart"></div>
     </div>
@@ -7,7 +7,8 @@
 
 <script>
 import $ from 'jquery'
-import mydata from '../../static/理科历年批次分数.json'
+import mydata from '../../static/理科历年批次分数2.json'
+import wenke from '../../static/文科历年批次分数2.json'
 import PubSub from 'pubsub-js'
 let echarts = require("echarts");
 
@@ -22,57 +23,96 @@ export default {
 mounted(){
     PubSub.subscribe("clickSchool", (msg, data) => {
       this.school = data;
+      this.location=''
       this.drawLineChart(data)
+    });
+    PubSub.subscribe("pub_mapProvince", (msg, data) => {
+       this.school=''
+       this.location=data
+       
     });
   },
   methods: {
    drawLineChart(schoolName){
     // 基于准备好的dom，初始化echarts实例
-    // var nam='批次'
+    var year 
+    var index
     var lineData=[]
-    var j
+    var myLegend=[]
     // console.log(mydata[0][nam])
-    for(j=0;j<mydata.length;j++)
+    for(let j=0;j<mydata.length;j++)
     {
         if(mydata[j]['学校']==schoolName)
         {
             for(let i=0;i<mydata[j]['批次'].length;i++)
             {
+                myLegend.push(mydata[j]['批次'][i])
                 var nam=mydata[j]['批次'][i]
+                year = mydata[j][nam][0]
                 var obj={
                     name: nam,
                     type: 'line',
                     stack: '总量',
-                    data:mydata[j][nam][1].reverse()
+                    data:mydata[j][nam][1]
                 }
                 lineData.push(obj)
 
             }
+            index=j
             this.drawBarChart(j)
             break;
-
-
         }
 
     }
-   
+
+     for(let j=0;j<wenke.length;j++)
+    {
+        if(wenke[j]['学校']==schoolName)
+        {
+            for(let i=0;i<wenke[j]['批次'].length;i++)
+            {
+                myLegend.push(wenke[j]['批次'][i])
+                var nam=wenke[j]['批次'][i]
+                var obj={
+                    name: nam,
+                    type: 'line',
+                    stack: '总量',
+                    data:wenke[j][nam][1]
+                }
+                lineData.push(obj)
+            }
+            break;
+        }
+
+    }
+
     var bar_dv = this.$refs.lineChart;
         if (bar_dv){
           let myChart = this.$echarts.init(bar_dv)
    var option = {
     title: {
-        text: '折线图堆叠'
+        text: '历年最低录取分数线',
+        left: "center",
+                textStyle: {
+                fontSize: 25,
+                color: "rgba(245, 237, 237, 1)"//设置标题字体颜色
+                 },
     },
     tooltip: {
         trigger: 'axis'
     },
     legend: {
-        data:mydata[0]['批次']
+        data:myLegend,
+        bottom:"2%",
+        textStyle: { //图例文字的样式
+                            color: '#fff',
+                            fontSize: 16
+                        }
     },
     grid: {
         left: '3%',
         right: '4%',
-        bottom: '3%',
+        bottom: '10%',
         width:'85%',
         containLabel: true
     },
@@ -94,7 +134,7 @@ mounted(){
                 }
             },
         boundaryGap: true,
-        data: mydata[j][nam][0].reverse()
+        data: year.reverse()
     },
     yAxis: {
         type: 'value',
@@ -118,7 +158,7 @@ mounted(){
     {
         var nam=mydata[item]['批次'][i]
         var obj={
-            data:mydata[item][nam][2].reverse(),
+            data:mydata[item][nam][2],
             type: 'bar',
             showBackground: true,
             backgroundStyle: {
@@ -136,7 +176,6 @@ mounted(){
             }
         }
         barData.push(obj)
-
     }
 
     var bar_dv = this.$refs.barChart;
@@ -145,7 +184,7 @@ mounted(){
    var option = {
         xAxis: {
             type: 'category',
-            data:  mydata[item][nam][0].reverse(),
+            data:  mydata[item][nam][0],
              axisLine: {
                 lineStyle: {
                     color: "#fff",
